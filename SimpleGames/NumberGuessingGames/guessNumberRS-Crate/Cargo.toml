@@ -1,0 +1,7 @@
+[package]
+name = "guessNumberRS-Crate"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+adv_random = "2.1.1"

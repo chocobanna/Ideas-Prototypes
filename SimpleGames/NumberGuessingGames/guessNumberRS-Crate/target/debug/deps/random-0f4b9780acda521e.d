@@ -1,0 +1,11 @@
+/home/kaden/Repos/Ideas-Prototypes/SimpleGames/NumberGuessingGames/guessNumberRS-Crate/target/debug/deps/librandom-0f4b9780acda521e.rmeta: /home/kaden/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/random-0.14.0/src/lib.rs /home/kaden/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/random-0.14.0/src/sequence.rs /home/kaden/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/random-0.14.0/src/source.rs /home/kaden/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/random-0.14.0/src/value.rs /home/kaden/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/random-0.14.0/src/xorshift.rs
+
+/home/kaden/Repos/Ideas-Prototypes/SimpleGames/NumberGuessingGames/guessNumberRS-Crate/target/debug/deps/librandom-0f4b9780acda521e.rlib: /home/kaden/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/random-0.14.0/src/lib.rs /home/kaden/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/random-0.14.0/src/sequence.rs /home/kaden/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/random-0.14.0/src/source.rs /home/kaden/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/random-0.14.0/src/value.rs /home/kaden/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/random-0.14.0/src/xorshift.rs
+
+/home/kaden/Repos/Ideas-Prototypes/SimpleGames/NumberGuessingGames/guessNumberRS-Crate/target/debug/deps/random-0f4b9780acda521e.d: /home/kaden/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/random-0.14.0/src/lib.rs /home/kaden/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/random-0.14.0/src/sequence.rs /home/kaden/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/random-0.14.0/src/source.rs /home/kaden/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/random-0.14.0/src/value.rs /home/kaden/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/random-0.14.0/src/xorshift.rs
+
+/home/kaden/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/random-0.14.0/src/lib.rs:
+/home/kaden/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/random-0.14.0/src/sequence.rs:
+/home/kaden/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/random-0.14.0/src/source.rs:
+/home/kaden/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/random-0.14.0/src/value.rs:
+/home/kaden/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/random-0.14.0/src/xorshift.rs:
