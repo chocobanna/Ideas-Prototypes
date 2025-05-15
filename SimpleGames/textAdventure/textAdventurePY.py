@@ -1,34 +1,70 @@
 
-class Point:
-    def __init__(self, x, y, description, option1, option2, option3):
-        self.x = x
-        self.y = y
+class Item:
+    def __init__(self, name, description,value=0, weight=0):
+        self.name = name
         self.description = description
-        self.option1 = option1
-        self.option2 = option2
-        self.option3 = option3
+        self.value = 0
+        self.weight = 0
+
     def __str__(self):
-        return f"Point({self.x}, {self.y}, {self.description}, {self.option1}, {self.option2}, {self.option3})"
+        return f"{self.name}: {self.description} (Value: {self.value}, Weight: {self.weight})"
     def __repr__(self):
         return self.__str__()
 
-class Campaign:
+class PointOfInterest:
     def __init__(self, name, description):
         self.name = name
         self.description = description
-        self.points = []
-    def add_point(self, point):
-        self.points.append(point)
-    def __str__(self):
-        return f"Campaign({self.name}, {self.description}, {len(self.points)} points)"
-    def __repr__(self):
-        return self.__str__()
+        self.marketExports = []
+        self.marketImports = []
     
-class Game:
+    def add_market_export(self, item, quantity=100): #quantity is yearly addition
+        self.marketExports.append([item, quantity])
     
+    def add_market_import(self, item, quantity=100): #quantity is yearly addition
+        self.marketImports.append([item, quantity])
 
-firstCampaign = Campaign("The Lost Treasure", "A quest to find the lost treasure of the ancient civilization.")
-firstCampaign.add_point(Point(0, 0, "You are at the entrance of a dark cave.", "Enter the cave", "Look around", "Leave"))
-firstCampaign.add_point(Point(1, 0, "You are inside the cave. It's dark and damp.", "Light a torch", "Explore deeper", "Go back"))
-firstCampaign.add_point(Point(2, 0, "You find a treasure chest!", "Open the chest", "Leave it alone", "Take it with you"))
-firstCampaign.add_point(Point(3, 0, "You are outside the cave. The sun is shining.", "Go back inside", "Look for more treasure", "Leave the area"))
+    def __str__(self):
+        exports = ", ".join(f"{qty}× {item.name}" for item, qty in self.marketExports)
+        imports = ", ".join(f"{qty}× {item.name}" for item, qty in self.marketImports)
+        return (
+            f"{self.name}: {self.description}\n"
+            f"Market Exports: {exports or 'None'}\n"
+            f"Market Imports: {imports or 'None'}"
+        )
+    
+#POIs
+earth = PointOfInterest("Earth", "The third planet from the Sun, home to humanity.")
+moon = PointOfInterest("Moon", "Earth's only natural satellite.")
+
+#Items
+water = Item("Water", "Essential for life, found in rivers and oceans.", 1, 1)
+rations = Item("Rations", "Food supplies for long journeys.", 5, 2)
+oxygen = Item("Oxygen", "Essential for breathing, found in the atmosphere.", 1, 0.5)
+fuel = Item("Fuel", "Used for powering spacecraft.", 10, 5)
+stone = Item("Stone", "A common material found on Earth and the Moon.", 0.5, 1)
+platinum = Item("Platinum", "A precious metal used in various applications.", 100, 0.1)
+
+#Adding items to POIs
+earth.add_market_export(water, 1000)
+earth.add_market_export(rations, 500)
+earth.add_market_export(oxygen, 10000)
+earth.add_market_export(fuel, 200)
+moon.add_market_import(water, 1000)
+moon.add_market_import(rations, 500)
+moon.add_market_import(oxygen, 10000)
+moon.add_market_import(fuel, 200)
+moon.add_market_export(platinum, 1000)
+earth.add_market_import(platinum, 2000)
+
+# Print the details of the points of interest
+print(earth)
+print(moon)
+# Print the details of the items
+print()
+print(water)
+print(rations)
+print(oxygen)
+print(fuel)
+print(stone)
+print(platinum)
