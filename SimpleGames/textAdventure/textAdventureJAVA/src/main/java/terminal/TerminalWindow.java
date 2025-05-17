@@ -1,5 +1,6 @@
-// src/terminal/TerminalWindow.java
+// src/main/java/terminal/TerminalWindow.java
 package terminal;
+
 import javax.swing.*;
 import javax.swing.text.*;
 import java.awt.*;
@@ -8,6 +9,23 @@ import java.awt.event.*;
 public class TerminalWindow extends JFrame {
     private final JTextArea textArea = new JTextArea();
     private final CommandHandler handler = new CommandHandler();
+    private final DocumentFilter filter = new DocumentFilter() {
+        @Override public void insertString(FilterBypass fb, int off, String str, AttributeSet attr)
+                throws BadLocationException {
+            if (off >= promptPosition) super.insertString(fb, off, str, attr);
+            else Toolkit.getDefaultToolkit().beep();
+        }
+        @Override public void remove(FilterBypass fb, int off, int len)
+                throws BadLocationException {
+            if (off >= promptPosition) super.remove(fb, off, len);
+            else Toolkit.getDefaultToolkit().beep();
+        }
+        @Override public void replace(FilterBypass fb, int off, int len, String txt, AttributeSet attrs)
+                throws BadLocationException {
+            if (off >= promptPosition) super.replace(fb, off, len, txt, attrs);
+            else Toolkit.getDefaultToolkit().beep();
+        }
+    };
     private int promptPosition = 0;
 
     public TerminalWindow() {
@@ -16,7 +34,7 @@ public class TerminalWindow extends JFrame {
         initUI();
         setSize(800, 600);
         setLocationRelativeTo(null);
-        appendText("> ");
+        appendPrompt();
         setVisible(true);
         textArea.requestFocusInWindow();
     }
@@ -29,38 +47,31 @@ public class TerminalWindow extends JFrame {
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);
 
-        // Block edits before prompt
-        AbstractDocument doc = (AbstractDocument) textArea.getDocument();
-        doc.setDocumentFilter(new DocumentFilter() {
-            @Override
-            public void insertString(FilterBypass fb, int off, String str, AttributeSet attr) throws BadLocationException {
-                if (off >= promptPosition) super.insertString(fb, off, str, attr);
-                else Toolkit.getDefaultToolkit().beep();
-            }
-            @Override
-            public void remove(FilterBypass fb, int off, int len) throws BadLocationException {
-                if (off >= promptPosition) super.remove(fb, off, len);
-                else Toolkit.getDefaultToolkit().beep();
-            }
-            @Override
-            public void replace(FilterBypass fb, int off, int len, String txt, AttributeSet attrs) throws BadLocationException {
-                if (off >= promptPosition) super.replace(fb, off, len, txt, attrs);
-                else Toolkit.getDefaultToolkit().beep();
-            }
-        });
+        // install filter on initial document
+        ((AbstractDocument) textArea.getDocument()).setDocumentFilter(filter);
 
         textArea.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
+            @Override public void keyPressed(KeyEvent e) {
                 if (textArea.getCaretPosition() < promptPosition)
                     textArea.setCaretPosition(textArea.getDocument().getLength());
+
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     e.consume();
                     String cmd = textArea.getText().substring(promptPosition).trim();
+                    if ("clear".equals(cmd)) {
+                        // completely wipe and re-install filter
+                        PlainDocument newDoc = new PlainDocument();
+                        newDoc.setDocumentFilter(filter);
+                        textArea.setDocument(newDoc);
+                        promptPosition = 0;
+                        appendPrompt();
+                        return;
+                    }
+
                     appendText("\n");
                     String resp = handler.handle(cmd);
-                    appendText(resp + "\n");
-                    appendText("> ");
+                    if (resp != null) appendText(resp + "\n");
+                    appendPrompt();
                 }
             }
         });
@@ -68,15 +79,21 @@ public class TerminalWindow extends JFrame {
         add(new JScrollPane(textArea), BorderLayout.CENTER);
     }
 
+    private void appendPrompt() {
+        appendText(handler.getCurrentDirPath() + "> ");
+    }
+
     private void appendText(String text) {
         try {
-            textArea.getDocument().insertString(textArea.getDocument().getLength(), text, null);
+            textArea.getDocument().insertString(
+                textArea.getDocument().getLength(), text, null
+            );
         } catch (BadLocationException ignored) {}
         promptPosition = textArea.getDocument().getLength();
         textArea.setCaretPosition(promptPosition);
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new TerminalWindow());
+        SwingUtilities.invokeLater(TerminalWindow::new);
     }
 }
