@@ -31,6 +31,7 @@ def launch_child():
                 f"python3 {script}; exec bash"
             ]
         subprocess.Popen(cmd)
+
 class Item:
     def __init__(self, name, description,value=0, weight=0):
         self.name = name
@@ -91,14 +92,17 @@ if __name__ == "__main__":
     moon.add_market_export(platinum, 1000)
     earth.add_market_import(platinum, 2000)
 
-    # Print the details of the points of interest
-    print(earth)
-    print(moon)
-    # Print the details of the items
-    print()
-    print(water)
-    print(rations)
-    print(oxygen)
-    print(fuel)
-    print(stone)
-    print(platinum)
+    askme = input(">:")
+    if askme == "print pois":
+        print(earth)
+        print(moon)
+        print()
+
+    elif askme == "print items":
+        print(water)
+        print(rations)
+        print(oxygen)
+        print(fuel)
+        print(stone)
+        print(platinum)
+        print()
