@@ -104,7 +104,6 @@ public class CommandHandler {
             "Kuiper_Belt/Haumea_Outpost",
             "Kuiper_Belt/Quaoar_Station"
         };
-
         for (String p : paths) {
             addPath(p);
         }
@@ -123,9 +122,17 @@ public class CommandHandler {
         }
     }
 
+    /** 
+     * Supported commands:
+     *   nav <dir>    – descend into child directory
+     *   nav ..       – go up to parent directory
+     *   list         – list subdirectories here
+     *   help         – show this help message
+     */
     public String handle(String cmd) {
         String[] parts = cmd.split("\\s+");
         if (parts.length == 0 || parts[0].isEmpty()) return null;
+
         switch (parts[0]) {
             case "nav":
                 if (parts.length < 2) return "Usage: nav <dir> or nav ..";
@@ -134,13 +141,28 @@ public class CommandHandler {
                     return null;
                 }
                 DirectoryNode nxt = current.children.get(parts[1]);
-                if (nxt != null) { current = nxt; return null; }
+                if (nxt != null) {
+                    current = nxt;
+                    return null;
+                }
                 return "Directory not found: " + parts[1];
+
             case "list":
                 if (current.children.isEmpty()) return "(no subdirectories)";
                 List<String> names = new ArrayList<>(current.children.keySet());
                 Collections.sort(names);
                 return String.join("\n", names);
+
+            case "help":
+                return String.join("\n",
+                    "Available commands:",
+                    "  nav <dir>    – descend into child directory",
+                    "  nav ..       – go up to parent directory",
+                    "  list         – list subdirectories here",
+                    "  clear        – clear the terminal screen",
+                    "  help         – show this help message"
+                );
+
             default:
                 return "Unknown command: " + cmd;
         }
@@ -161,7 +183,11 @@ public class CommandHandler {
         final String name;
         final DirectoryNode parent;
         final Map<String, DirectoryNode> children = new HashMap<>();
-        DirectoryNode(String name) { this(name, null); }
+
+        DirectoryNode(String name) {
+            this(name, null);
+        }
+
         DirectoryNode(String name, DirectoryNode parent) {
             this.name = name;
             this.parent = parent;
